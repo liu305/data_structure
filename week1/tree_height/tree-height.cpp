@@ -14,7 +14,7 @@ public:
     std::vector<Node *> children;
 
     Node() {
-      this->parent = NULL;
+      this->parent = nullptr;
     }
 
     void setParent(Node *theParent) {
@@ -23,6 +23,20 @@ public:
     }
 };
 
+int Height(Node *initial)
+{
+    if (initial->children.empty()) {return 1;}
+    else {
+	int maxHeight = 0;
+	int tmpHeight = 0;
+	for (auto &x : initial->children)
+	{
+	    tmpHeight = Height(x);
+	    if (maxHeight < tmpHeight) {maxHeight=tmpHeight;}
+	}
+        return maxHeight+1;
+    }
+}
 
 int main_with_large_stack_space() {
   std::ios_base::sync_with_stdio(0);
@@ -39,15 +53,19 @@ int main_with_large_stack_space() {
     nodes[child_index].key = child_index;
   }
 
+ // for (int child_index = 0 ; child_index < n; child_index++) {
+ //    std::cout << nodes[child_index].children.empty() << "\n";}
+
   // Replace this code with a faster implementation
   int maxHeight = 0;
-  for (int leaf_index = 0; leaf_index < n; leaf_index++) {
-    int height = 0;
-    for (Node *v = &nodes[leaf_index]; v != NULL; v = v->parent)
-      height++;
-    maxHeight = std::max(maxHeight, height);
-  }
+  //for (int leaf_index = 0; leaf_index < n; leaf_index++) {
+  //  int height = 0;
+  //  for (Node *v = &nodes[leaf_index]; v != NULL; v = v->parent)
+  //    height++;
+  //  maxHeight = std::max(maxHeight, height);
+  //}
     
+  for (size_t i = 0; i < nodes.size(); ++i) if (!nodes[i].parent) {maxHeight = Height(&nodes[i]);}
   std::cout << maxHeight << std::endl;
   return 0;
 }
